@@ -1,0 +1,288 @@
+TES Documentation / Command list.
+
+This documentation is intended to familiarise users with the commands/modes which TES provides.
+
+It is not intended to give a complete listing of all irc commands, since such listings are provided
+freely elsewhere on the internet.
+
+
+--- Usermodes
+Command:		MODE
+Description:	Changes your usermodes.
+				Supplied with no arguments, views your current modes.
+Syntax:		/MODE <nick> +/-<mode>
+Requirements:   See below.
+
+<mode> can be:
+For normal users (non sysops):
+				i	- Invisible
+				s	- Lets you see server notices.
+				w	- Lets you see wallops.
+For sysops:
+				c	- Lets you see local connection notices.
+				F	- Lets you see non-local connection notices.
+				W	- Tells you when people /WHOIS you.
+				H	- Hide IRC operator staus in /WHOIS reply.
+				f	- Lets you see connection flood alerts from server.
+				K	- Lets you see K-Lined connection attempts.
+				h	- Marks you as available for Help
+				k	- Lets you see /KILLs.
+				
+				o	- Marks you as a local operator.
+				O	- Marks you as a global operator.
+				S	- Marks you as a services bot.
+				N	- Marks you as a Network Admin.
+				
+
+
+
+--- Commands (specific to the TES server)
+
+Command:		CHANCLOSE
+Description:	Forcefully closes a channel. Only IRC Ops will be able to join the channel.
+				If the channel currently has users in it when it is closed, they will be removed from the channel.
+Syntax:		/CHANCLOSE #channel [reason]	OR /KILL #channel [reason]
+Requirements:   IRC Operator status.
+Notes:
+				It is IMPORTANT to note, that channels will only be closed on the LOCAL server. To close a channel
+				globally, an IRC Operator must issue the close command on each server.				
+				
+				Examples of usage:
+						/CHANCLOSE #test Because I'm mean!	- Channel #test will be closed, and the members will
+						be informed of the reason for closure.
+				
+				To re-open a channel, use /CHANOPEN
+
+
+Command:		CHANOPEN
+Description:	Re-Opens a channel that has been closed with /CHANCLOSE or /KILL
+Syntax:		/CHANOPEN #channel
+Requirements:   IRC Operator status.
+Notes:		  Nobody will be informed about the channel being re-opened, except from yourself.
+
+
+Command:		SILENCE
+Description:	Similar to /ignore in mirc. Silence prevents unwanted users from privmsg/noticeing you.
+Syntax:		/SILENCE +/-nick!ident@*.hostmask
+Requirements:   None.
+Notes:		
+				Examples of usage:
+						/SILENCE <nick>		- displays active silences by <nick>. Using your own nick here will
+												 display your own active silences.
+						/SILENCE +mask		 - Add a mask to your silences list.
+												e.g. /SILENCE +bob!*@*
+						/SILENCE -mask		 - Remove a mask from your silences list. This mask must match an existing
+												silence exactly.
+
+
+Command:		WEBREPORT
+Description:	Forces the server to perform a status report to www.tesx.org/?page=inuse
+Syntax:		/WEBREPORT
+Requirements:   Net Admin status.
+
+
+Command:		SERVERLIST
+Description:	Lists all servers known by the hub, whether connected, disconnected, or removed.
+Syntax:		/SERVERLIST
+Requirements:  Sysop status. Your server must be connected to the hub.
+Notes:
+				The server will reply in the following format (as of TES 1.313):
+				
+				Server <server-number> :: <serverName> (<serverIP>:<port>) (<status>)
+				<server-number>	- The index of this server in the hub's server-list.
+				<serverName>		- server-name in the servers ircx.conf
+				<serverIP>:<port>	- The ip and port the server is running on.
+				<status>			- One of:
+												Connected	- Server is currently connected to the hub.
+												Disconnected - Still attempting connection between server/hub.
+												Removed [r]  - Removed. r = Reason for removal.
+																r=Incompatible	- TES Version incompatibility.
+																r=By Request  	- Removed by a Network Admin.
+																r=Bad Password	- Hub-password was not accepted by server.
+
+
+
+Command:		ADDSERVER
+Description:	Connects a new server to the hub.
+				Note: For TES < 1.314 This does not permanantly write a line to hub.conf.
+					  For TES >= 1.314, it does write the server to hub.conf.
+				This command allows you to connect servers without restarting the hub.
+Syntax:		/ADDSERVER <ip> <port> <hub-password>
+Requirements:  Net Admin status.
+
+				<ip>			- The IP-Address or hostname of the server to be connected.
+				<port>		  - The port this server accepts connections on (usually 6667)
+				<hub-password>  - A password to negotiate connection between hub/server. This password must match the one
+								  in the server's o-lines section for the hub.
+
+
+Command:		REMSERVER
+Description:	Requests the removal of a server from the network. This is non-permanant, and can be reversed with
+				/UNREMSERVER.
+Syntax:		/REMSERVER <index>
+Requirements:  Net Admin status.
+
+				<index>		- The index of this server on a /serverlist.
+				
+				
+Command:		UNREMSERVER
+Description:	The reverse of a /REMSERVER
+Syntax:		/UNREMSERVER <index>
+Requirements:  Net Admin status.
+
+				<index>		- The index of this server on a /serverlist.
+
+
+
+
+
+Command:		SMSG
+Description:	Server message. Sends a local-server wide message which appears to come from the server itself.
+Syntax:		/SMSG <message>
+Requirements:  Sysop status.
+
+				<message>	- The message you want to be sent to everyone.
+				
+Command:		BROADCAST or SNOTICE
+Description:	Send a server/network wide notice to everyone.
+Syntax:		/BROADCAST <message>	or	/SNOTICE <message>
+Requirements:  Sysop status to send local notice, Global-op status to send network-wide notice.
+
+				<message>	- The message you want to be broadcast.
+				
+				
+Command:		LONOTICE
+Description:	Sent a notice to local oper.
+Syntax:		/LONOTICE <message>
+Requirements:  Sysop status.
+
+				<message>	- The message you want to be sent.
+
+
+Command:		GONOTICE
+Description:	Sent a notice to global oper.
+Syntax:		/GONOTICE <message>
+Requirements:  Global oper status.
+
+				<message>	- The message you want to be sent.				
+				
+
+
+Command:		FRAW
+Description:	Fake-RAW. Send a command as if it came from another user.
+Syntax:		/FRAW <nick> <command>
+Requirements:  Sysop status. (You require global-op status to fraw a user on a non-local server.)
+
+				<nick>		- The user you want to fake the command from.
+				<command>	 - The command to fake.
+				
+				e.g. /fraw bob JOIN #splog		- will make bob join #splog.
+				e.g. /fraw bob PRIVMSG #splog :hello	- will make bob say hello in #splog.
+				
+Notes:		This command simply makes it as if the user has typed the command themselves.
+				i.e. if bob is banned from #splog, and you do /fraw bob join #splog, bob will not be able
+				to join. Or in the second example above, if #splog is +m, bob will not say hello.
+				Hope this clears up any confusion about /fraw.
+				
+				
+				
+
+Command:		CHGHOST or VHOST
+Description:	Changes a users domain-name / ip to a fake one.
+				i.e. changes nick!ident@host.com to nick!ident@another-host.com
+Syntax:		/CHGHOST <nick> <newhost>
+Requirements:  Sysop status.
+
+				<nick>		- The user who will have their host changed.
+				<newhost>	 - The new host this user will get.
+				
+				
+Command:		REHASH
+Description:	Rehash server files.
+Syntax:		/REHASH <option>
+Requirements:  Network Admin status.
+
+				<option>:
+							-motd		- Rehash the Message Of The Day file.
+							-conf		- Rehash many of the options in ircx.conf
+							-all		 - Rehash all of the above.
+
+
+Command:		KLINES
+Description:	Displays a list of all active k-lines on the server.
+Syntax:		/KLINES
+Requirements:  Sysop status.
+
+Command:		GLINES
+Description:	Displays a list of all active g-lines on the network (which your server knows about).
+Syntax:		/KLINES
+Requirements:  Sysop status.
+
+
+Command:		KLINE
+Description:	Add a k-line. A k-line is a method of preventing unwanted users from using your server.
+				It bans users based on a hostmask. either ip or domain name masks.
+Syntax:		/KLINE <mask>
+Requirements:  Sysop status.
+
+				<mask>:
+						Can be either an IP-mask, or a hostname maksk.
+						IP-mask		- e.g. 123.23.1.*
+						Hostname-mask  - e.g. *.bad-people.co.uk
+						
+
+Command:		UNKLINE
+Description:	Removes an existing k-line. The mask you use to remove it must be identical to the mask used
+				to add the k-line originally. See /KLINES above for information on viewing existing k-lines.
+Syntax:		/UNKLINE <mask>
+Requirements:  Sysop status.
+
+				<mask>:
+						The mask to be un-klined.
+
+
+Command:		GLINE
+Description:	Adds a global (network wide k-line)
+Syntax:		 See /KLINE
+Requirements:   Global Operator or higher.
+
+Command:		UNGLINE
+Description:	Removes a GLINE
+Syntax:		 See /UNKLINE
+Requirements:   Global Operator or higher.
+
+
+
+Command:		CS
+Description:	Starts, stops and restarts TES's chanserv.
+Syntax:		/CS <option>
+Requirements:  Network Admin status. use-chanserv must be set to 1 in ircx.conf
+
+				<option>:
+						START		- Start chanserv
+						STOP		 - Stop chanserv
+						RESTART	  - Restart chanserv
+						
+Notes:		Be Warned, this command may dissapear in forthcoming versions.
+			  ChanServ is currently being rewritten as of TES 1.308. The CS command may be removed (or have
+			  it's usage altered) in upcoming versions.
+
+
+
+Command:		DEBUG
+Description:	Allows TES debug information to be displayed to the terminal/command prompt while TES is running.
+				As of TES >= 1.317 the hub's debug mode can be switched on/off using this command from any connected server.
+Syntax:		/DEBUG [-s/-h] ON/OFF
+Requirements:  Network Admin status.
+
+Notes:		This command is really only useful to developers / testers.
+			  Examples of usage:
+			  					/DEBUG ON		- Switches the SERVER'S debug mode on.
+			  					/DEBUG -h ON	 - Switches the HUB'S debug mode on. (Requires connection to hub).
+			  					/DEBUG -s ON	 - Switches the SERVER'S debug mode on.
+
+			  Note that if -s/-h is ommitted, -s will be assumed.
+
+
+
+
