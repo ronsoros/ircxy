@@ -12,6 +12,16 @@ do: /oper user pass
 then using the (beta testing, experimental) CONF command,
 add an O-line: /quote CONF add o-line N:myusername:mypassword
 
+modify your motd by making/editing motd.txt
+
 ## compiling
 
-just do: javac *.java and it is compiled! You need JDK for this.
+just do: 
+$ cd src
+$ javac *.java and it is compiled! You need JDK for this.
+
+## i use windows!
+
+Grab the latest .jar file from http://aws.ronsor.net/ircxy.jar
+
+You will need a copy of ircxy.conf from here.

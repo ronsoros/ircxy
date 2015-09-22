@@ -1,11 +1,16 @@
-TES Documentation / Command list.
+IRCXY Documentation / Command list.
 
-This documentation is intended to familiarise users with the commands/modes which TES provides.
+This documentation is intended to familiarise users with the commands/modes which IRCXY provides.
 
 It is not intended to give a complete listing of all irc commands, since such listings are provided
 freely elsewhere on the internet.
 
-
+--- Channel modes
+Command: MODE
+Description: Change channel modes
+Syntax: /mode <channel> +/-<mode [parameter]>
+All standard modes supported, plus +/-q owner status and
++/-w [q|o|v]:[hostmask] - autoset modes on everyone who joins and belongs to hostmask
 --- Usermodes
 Command:		MODE
 Description:	Changes your usermodes.
@@ -36,19 +41,19 @@ For sysops:
 
 
 
---- Commands (specific to the TES server)
+--- Commands (specific to the IRCXY server)
 
 Command:		CHANCLOSE
 Description:	Forcefully closes a channel. Only IRC Ops will be able to join the channel.
 				If the channel currently has users in it when it is closed, they will be removed from the channel.
 Syntax:		/CHANCLOSE #channel [reason]	OR /KILL #channel [reason]
 Requirements:   IRC Operator status.
-Notes:
+NoIRCXY:
 				It is IMPORTANT to note, that channels will only be closed on the LOCAL server. To close a channel
 				globally, an IRC Operator must issue the close command on each server.				
 				
 				Examples of usage:
-						/CHANCLOSE #test Because I'm mean!	- Channel #test will be closed, and the members will
+						/CHANCLOSE #IRCXYt Because I'm mean!	- Channel #IRCXYt will be closed, and the members will
 						be informed of the reason for closure.
 				
 				To re-open a channel, use /CHANOPEN
@@ -58,14 +63,14 @@ Command:		CHANOPEN
 Description:	Re-Opens a channel that has been closed with /CHANCLOSE or /KILL
 Syntax:		/CHANOPEN #channel
 Requirements:   IRC Operator status.
-Notes:		  Nobody will be informed about the channel being re-opened, except from yourself.
+NoIRCXY:		  Nobody will be informed about the channel being re-opened, except from yourself.
 
 
 Command:		SILENCE
 Description:	Similar to /ignore in mirc. Silence prevents unwanted users from privmsg/noticeing you.
 Syntax:		/SILENCE +/-nick!ident@*.hostmask
 Requirements:   None.
-Notes:		
+NoIRCXY:		
 				Examples of usage:
 						/SILENCE <nick>		- displays active silences by <nick>. Using your own nick here will
 												 display your own active silences.
@@ -76,7 +81,7 @@ Notes:
 
 
 Command:		WEBREPORT
-Description:	Forces the server to perform a status report to www.tesx.org/?page=inuse
+Description:	Forces the server to perform a status report to www.IRCXYx.org/?page=inuse
 Syntax:		/WEBREPORT
 Requirements:   Net Admin status.
 
@@ -85,8 +90,8 @@ Command:		SERVERLIST
 Description:	Lists all servers known by the hub, whether connected, disconnected, or removed.
 Syntax:		/SERVERLIST
 Requirements:  Sysop status. Your server must be connected to the hub.
-Notes:
-				The server will reply in the following format (as of TES 1.313):
+NoIRCXY:
+				The server will reply in the following format (as of IRCXY 1.313):
 				
 				Server <server-number> :: <serverName> (<serverIP>:<port>) (<status>)
 				<server-number>	- The index of this server in the hub's server-list.
@@ -96,7 +101,7 @@ Notes:
 												Connected	- Server is currently connected to the hub.
 												Disconnected - Still attempting connection between server/hub.
 												Removed [r]  - Removed. r = Reason for removal.
-																r=Incompatible	- TES Version incompatibility.
+																r=Incompatible	- IRCXY Version incompatibility.
 																r=By Request  	- Removed by a Network Admin.
 																r=Bad Password	- Hub-password was not accepted by server.
 
@@ -104,8 +109,8 @@ Notes:
 
 Command:		ADDSERVER
 Description:	Connects a new server to the hub.
-				Note: For TES < 1.314 This does not permanantly write a line to hub.conf.
-					  For TES >= 1.314, it does write the server to hub.conf.
+				Note: For IRCXY < 1.314 This does not permanantly write a line to hub.conf.
+					  For IRCXY >= 1.314, it does write the server to hub.conf.
 				This command allows you to connect servers without restarting the hub.
 Syntax:		/ADDSERVER <ip> <port> <hub-password>
 Requirements:  Net Admin status.
@@ -179,7 +184,7 @@ Requirements:  Sysop status. (You require global-op status to fraw a user on a n
 				e.g. /fraw bob JOIN #splog		- will make bob join #splog.
 				e.g. /fraw bob PRIVMSG #splog :hello	- will make bob say hello in #splog.
 				
-Notes:		This command simply makes it as if the user has typed the command themselves.
+NoIRCXY:		This command simply makes it as if the user has typed the command themselves.
 				i.e. if bob is banned from #splog, and you do /fraw bob join #splog, bob will not be able
 				to join. Or in the second example above, if #splog is +m, bob will not say hello.
 				Hope this clears up any confusion about /fraw.
@@ -254,7 +259,7 @@ Requirements:   Global Operator or higher.
 
 
 Command:		CS
-Description:	Starts, stops and restarts TES's chanserv.
+Description:	Starts, stops and restarts IRCXY's chanserv.
 Syntax:		/CS <option>
 Requirements:  Network Admin status. use-chanserv must be set to 1 in ircx.conf
 
@@ -263,19 +268,19 @@ Requirements:  Network Admin status. use-chanserv must be set to 1 in ircx.conf
 						STOP		 - Stop chanserv
 						RESTART	  - Restart chanserv
 						
-Notes:		Be Warned, this command may dissapear in forthcoming versions.
-			  ChanServ is currently being rewritten as of TES 1.308. The CS command may be removed (or have
+NoIRCXY:		Be Warned, this command may dissapear in forthcoming versions.
+			  ChanServ is currently being rewritten as of IRCXY 1.308. The CS command may be removed (or have
 			  it's usage altered) in upcoming versions.
 
 
 
 Command:		DEBUG
-Description:	Allows TES debug information to be displayed to the terminal/command prompt while TES is running.
-				As of TES >= 1.317 the hub's debug mode can be switched on/off using this command from any connected server.
+Description:	Allows IRCXY debug information to be displayed to the terminal/command prompt while IRCXY is running.
+				As of IRCXY >= 1.317 the hub's debug mode can be switched on/off using this command from any connected server.
 Syntax:		/DEBUG [-s/-h] ON/OFF
 Requirements:  Network Admin status.
 
-Notes:		This command is really only useful to developers / testers.
+NoIRCXY:		This command is really only useful to developers / IRCXYters.
 			  Examples of usage:
 			  					/DEBUG ON		- Switches the SERVER'S debug mode on.
 			  					/DEBUG -h ON	 - Switches the HUB'S debug mode on. (Requires connection to hub).
