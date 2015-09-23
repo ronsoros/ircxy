@@ -17,6 +17,7 @@ modify your motd by making/editing motd.txt
 ## compiling
 
 just do: 
+
    $ cd src
    $ javac *.java and it is compiled! You need JDK for this.
 
