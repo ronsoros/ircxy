@@ -1821,8 +1821,8 @@ public class EchoServer extends NetworkServer {
 
 	} else if (command.equals("INFO")) {
 	    if (users[userID].isRegistered()) {
-		tellUserNumeric(userID, 371, "Tes - Java IRCX server - v" + version);
-		tellUserNumeric(userID, 371, "Written by David Forrest (david@tesx.org - http://www.tesx.org)");
+		tellUserNumeric(userID, 371, "IRCv4 Server, by Ronsor" + version);
+		tellUserNumeric(userID, 371, "http://github.com/ronsoros/ircxy");
 		tellUserNumeric(userID, 374, "End of /INFO list.");
 
 	    }
@@ -2229,7 +2229,7 @@ public class EchoServer extends NetworkServer {
 		int chanID;
 		boolean notw = false;
 		String strChan;
-		  if (st.countTokens() == 3) {
+		  if (st.countTokens() == 3 && (cmd.indexOf("-w") > -1 || cmd.indexOf("+w") > -1)) {
 			strChan = st.nextToken();
 			chanID = is_channel(strChan);
 			if (chanID != -1) {
@@ -2247,14 +2247,14 @@ public class EchoServer extends NetworkServer {
 				boolean isop = (channels[chanID].getMemberStatusByID(userID) == 2);
 				if (isowner == true || isop == true){
 					String stat = tgt.substring(0,3);
-					String usr = tgt.substring(3, tgt.length());
+					String usr = tgt.substring(2, tgt.length());
 					if (stat.indexOf("o") > -1 && (isop == true || isowner == true)){
 					 if(addm == true){
 						int success = channels[chanID].addAccess( "HOST", usr, 0, false, "" );
 					 } else {
 						int success = channels[chanID].removeAccess( "HOST", usr, false );
 					 }
-					} else if(stat.indexOf("o") > -1 && isowner == true) {
+					} else if(stat.indexOf("q") > -1 && isowner == true) {
 					 if(addm == true){
 						int success = channels[chanID].addAccess( "OWNER", usr, 0, false, "");
 					 } else {
@@ -2268,12 +2268,12 @@ public class EchoServer extends NetworkServer {
 					 }
 					} 
 				tellUsersInChan(chanID, userMask(userID) + " MODE " + channels[chanID].getName() + " " + tmode + " " + tgt);
-			}
+			
 				} else {
 				notw = true;
 				}
 			}
-			
+			}
 		  }
 		
 		  if (notw == false) {
@@ -3155,8 +3155,6 @@ public class EchoServer extends NetworkServer {
 						//tellUser(userID, "no such ban");
 					}
 
-				} else if (strMode.equals("+w") && (stat >=2)) {
-					noticeUser(userID, "hi");
 				} else {
 					//off server mode +o/q/v whoTo  ?
 					if ((hubID != -1) && (userID != -1)) {
